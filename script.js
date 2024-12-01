@@ -784,7 +784,7 @@ loader.load('/lobster2.json', function (font) {
         if (window.innerWidth <= 768) { // Mobile
             return {
                 size1: 0.3, // Smaller font size for "Happy Birthday"
-                size2: 0.4,
+                size2: 0.3,
 				height: 0.3 // Smaller font size for "Sayali"
             };
         } else { // Desktop or larger screens
@@ -891,6 +891,19 @@ loader.load('/lobster2.json', function (font) {
 	textMesh4.position.set(-3, 4, 2);
 	textMesh5.position.set(-3, 2, 2);
 
+	if (window.innerWidth <= 768) { // Mobile
+		textMesh1.position.set(-3, 10, 2); // Position "Happy Birthday"
+		textMesh2.position.set(-3, 8, 2);
+		textMesh3.position.set(-3, 6, 2);
+		textMesh4.position.set(-3, 4, 2);
+		textMesh5.position.set(-3, 2, 2);
+	} else { // Desktop or larger screens
+		textMesh1.position.set(-5, 10, 2); // Position "Happy Birthday"
+		textMesh2.position.set(-5, 8, 2);
+		textMesh3.position.set(-5, 6, 2);
+		textMesh4.position.set(-5, 4, 2);
+		textMesh5.position.set(-5, 2, 2);
+	}
 
 
     // Add to the scene
@@ -940,7 +953,7 @@ loader.load('/lobster2.json', function (font) {
     // Animation Loop
     function animate() {
         requestAnimationFrame(animate);
-       animateText(); // Text Animation
+    //    animateText(); // Text Animation
         starField.rotation.y += 0.0005; // Rotate stars slowly
         renderer.render(scene1, camera);
     }
