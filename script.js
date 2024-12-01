@@ -509,6 +509,59 @@ function showCongratulation() {
   overlay.style.background = 'rgba(0, 0, 0, 0.8)';
   overlay.style.opacity = '1';
 }
+
+function smoothTransition(oldScene, newScene, renderer, camera) {
+    let transitionProgress = 0;
+
+    // Animation loop for smooth transition
+    function animateTransition() {
+        transitionProgress += 0.02; // Adjust speed of transition here (0.01 - slower, 0.05 - faster)
+
+        // Fade out old scene
+        oldScene.traverse((child) => {
+            if (child.material && child.material.opacity !== undefined) {
+                child.material.opacity = 1 - transitionProgress;
+                child.material.transparent = true;
+            }
+        });
+
+        // Fade in new scene
+        newScene.traverse((child) => {
+            if (child.material && child.material.opacity !== undefined) {
+                child.material.opacity = transitionProgress;
+                child.material.transparent = true;
+            }
+        });
+
+        // Transition ambient light
+        if (ambientLight) {
+            ambientLight.intensity = Math.max(0.1 - transitionProgress, 0);
+        }
+
+        // Render both scenes during transition
+        renderer.render(transitionProgress < 0.5 ? oldScene : newScene, camera);
+
+        if (transitionProgress < 1) {
+            requestAnimationFrame(animateTransition); // Continue animation
+        } else {
+            // Clean up old scene
+            oldScene.traverse((child) => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
+            renderer.render(newScene, camera); // Finalize on new scene
+        }
+    }
+
+    animateTransition(); // Start transition
+}
+
+
+
+
+
+
+
 function shiftToNewScene(){
 	scene.remove(cake);
 	scene.remove(candles);
@@ -548,9 +601,28 @@ function shiftToNewScene(){
 
 
 loader.load('/lobster2.json', function (font) {
+
+	const calculateFontSize = () => {
+        if (window.innerWidth <= 768) { // Mobile
+            return {
+                size1: 0.6, // Smaller font size for "Happy Birthday"
+                size2: 0.9  // Smaller font size for "Sayali"
+            };
+        } else { // Desktop or larger screens
+            return {
+                size1: 1.5,
+                size2: 1.8
+            };
+        }
+    };
+
+    // Get font sizes based on screen size
+    const fontSize = calculateFontSize();
+	console.log("FontsIZE", fontSize);
+
 	const textGeometry1 = new TextGeometry('Happy Birthday', {
         font: font,
-        size: 1.5, // Larger font size for "Happy Birthday"
+        size: fontSize.size1, // Larger font size for "Happy Birthday"
         height: 0.4, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
@@ -561,7 +633,7 @@ loader.load('/lobster2.json', function (font) {
 
     const textGeometry2 = new TextGeometry('Sayali  !!!', {
         font: font,
-        size: 1.8, // Smaller font size for "Sayali"
+        size: fontSize.size2, // Smaller font size for "Sayali"
         height: 0.4, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
@@ -597,6 +669,14 @@ loader.load('/lobster2.json', function (font) {
     textMesh1.position.set(-6, 6, 2); // Position "Happy Birthday"
     textMesh2.position.set(-4, 2.5, 2); // Position "Sayali" below it
 
+
+	if (window.innerWidth <= 768) { // Mobile
+		textMesh1.position.set(-3, 6, 2); // Position "Happy Birthday"
+		textMesh2.position.set(-2, 5, 2); // Position "Sayali" below it
+	} else{
+		textMesh1.position.set(-6, 6, 2); // Position "Happy Birthday"
+		textMesh2.position.set(-4, 2.5, 2); // Position "Sayali" below it
+	}
     // Add to the scene
     scene1.add(textMesh1);
     scene1.add(textMesh2);
@@ -650,6 +730,8 @@ loader.load('/lobster2.json', function (font) {
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
 camera.position.set(0, 5, 15);
 
+smoothTransition(scene, scene1, renderer, camera);
+
 }
 
 
@@ -697,10 +779,30 @@ function shiftToFinalScene(){
 	const loader = new FontLoader();
 	
 loader.load('/lobster2.json', function (font) {
+
+	const calculateFontSize = () => {
+        if (window.innerWidth <= 768) { // Mobile
+            return {
+                size1: 0.3, // Smaller font size for "Happy Birthday"
+                size2: 0.4,
+				height: 0.3 // Smaller font size for "Sayali"
+            };
+        } else { // Desktop or larger screens
+            return {
+                size1: 0.5,
+                size2: 0.6,
+				height: 0.4
+            };
+        }
+    };
+
+	const fontSize = calculateFontSize();
+
+
 	const textGeometry1 = new TextGeometry('Your wishes will all come true', {
         font: font,
-        size: 0.5, // Larger font size for "Happy Birthday"
-        height: 0.4, // Text depth
+        size: fontSize.size1, // Larger font size for "Happy Birthday"
+        height: fontSize.height, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
         bevelThickness: 0.02,
@@ -710,8 +812,8 @@ loader.load('/lobster2.json', function (font) {
 
 	const textGeometry2 = new TextGeometry('May this year be filled with,', {
         font: font,
-        size: 0.6, // Smaller font size for "Sayali"
-        height: 0.4, // Text depth
+        size: fontSize.size2, // Smaller font size for "Sayali"
+        height: fontSize.height, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
         bevelThickness: 0.02,
@@ -721,8 +823,8 @@ loader.load('/lobster2.json', function (font) {
 
 	const textGeometry3 = new TextGeometry('endless joy and new opportunities,', {
         font: font,
-        size: 0.6, // Smaller font size for "Sayali"
-        height: 0.4, // Text depth
+        size: fontSize.size2, // Smaller font size for "Sayali"
+        height: fontSize.height, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
         bevelThickness: 0.02,
@@ -732,8 +834,8 @@ loader.load('/lobster2.json', function (font) {
 
 	const textGeometry4 = new TextGeometry('Happy Birthday and may your journey', {
         font: font,
-        size: 0.6, // Smaller font size for "Sayali"
-        height: 0.4, // Text depth
+        size: fontSize.size1, // Smaller font size for "Sayali"
+        height: fontSize.height, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
         bevelThickness: 0.02,
@@ -743,8 +845,8 @@ loader.load('/lobster2.json', function (font) {
 
 	const textGeometry5 = new TextGeometry('be as beautiful as you are.', {
         font: font,
-        size: 0.6, // Smaller font size for "Sayali"
-        height: 0.4, // Text depth
+        size: fontSize.size2, // Smaller font size for "Sayali"
+        height: fontSize.height, // Text depth
         curveSegments: 32, // Smoother curves
         bevelEnabled: true,
         bevelThickness: 0.02,
@@ -783,11 +885,11 @@ loader.load('/lobster2.json', function (font) {
 	const textMesh5 = new THREE.Mesh(textGeometry5,textMaterial);
 
     // Position the text (adjust Y position for each line)
-    textMesh1.position.set(-6, 10, 2); // Position "Happy Birthday"
-    textMesh2.position.set(-6, 8, 2);
-	textMesh3.position.set(-6, 6, 2);
-	textMesh4.position.set(-6, 4, 2);
-	textMesh5.position.set(-6, 2, 2);
+    textMesh1.position.set(-3, 10, 2); // Position "Happy Birthday"
+    textMesh2.position.set(-3, 8, 2);
+	textMesh3.position.set(-3, 6, 2);
+	textMesh4.position.set(-3, 4, 2);
+	textMesh5.position.set(-3, 2, 2);
 
 
 
@@ -844,6 +946,7 @@ loader.load('/lobster2.json', function (font) {
     }
 
     animate();
+	smoothTransition(scene, scene1, renderer, camera);
 });
 
 // Renderer and Camera
