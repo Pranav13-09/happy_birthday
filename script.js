@@ -12,7 +12,7 @@ const candleCount = 5; // Number of candles
 const serviceKey = import.meta.env.VITE_EMAIL_SERVICE_KEY;
 const templateKey = import.meta.env.VITE_EMAIL_TEMPLATE_ID;
 const test = import.meta.env;
-console.log(serviceKey,templateKey,"I am env loaded", test); 
+
 
 const baseRadius = 2.5; // Base radius of the cake
 const baseHeight = 2; // Height of the cake base
@@ -510,18 +510,6 @@ function showCongratulation() {
   overlay.style.opacity = '1';
 }
 function shiftToNewScene(){
-	// scene.children.forEach((child) => {
-	// 	console.log(child,"I am the child");
-    //     if (child.geometry) child.geometry.dispose();
-    //     if (child.material) {
-    //         if (Array.isArray(child.material)) {
-    //             child.material.forEach((mat) => mat.dispose());
-    //         } else {
-    //             child.material.dispose();
-    //         }
-    //     }
-    //     scene.remove(child);
-    // });
 	scene.remove(cake);
 	scene.remove(candles);
 	cake.traverse((child) => {
@@ -866,7 +854,7 @@ camera.position.set(0, 5, 15);
 
 function submitWish() {
 
-	console.log("Submit wish is called");
+
     const wishText = document.getElementById("wishText").value;
 
     if (wishText.trim() === "") {
