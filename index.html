@@ -103,8 +103,10 @@
 }
 
 
-document.addEventListener('click', function enableAudio() {
+function enableAudio() {
     document.removeEventListener('click', enableAudio); // Remove the listener after the first click
+    document.removeEventListener('touchstart', enableAudio); // Remove the listener for touchstart as well
+
     setTimeout(function () {
         audio.play()
             .then(() => {
@@ -116,25 +118,17 @@ document.addEventListener('click', function enableAudio() {
             })
             .catch((error) => {
                 console.error('Audio playback failed:', error);
-				alert("Song Autoplay is paused due to google policies. Please Refresh the page and click to continue");
+                alert("Song autoplay is paused due to Google policies. Please refresh the page and click or touch to continue.");
             });
     }, 100);
-});
+}
 
 
-// function checkUserInteraction() {
-//     // Listen for volume change or click interaction
-//     audio.addEventListener('volumechange', function () {
-//         if (audio.volume > 0) { // If volume is increased
-//             hideVolumeReminder();
-// 			audio
-//         }
-//     });
 
-//     volumeReminder.addEventListener('click', function () {
-//         hideVolumeReminder();
-//     });
-// }
+document.addEventListener('click', enableAudio);
+document.addEventListener('touchstart', enableAudio);
+
+
 
 		function closeWishForm(final =false) {
     const wishForm = document.getElementById('wishForm');
