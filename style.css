@@ -1,0 +1,304 @@
+body{
+  overflow: hidden;
+  margin: 0;
+}
+
+div, p{
+    user-select: none;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+
+#volume-reminder {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1000;
+}
+
+#volume-reminder.show {
+    opacity: 1;
+}
+
+#volume-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+#hold-reminder {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-right:auto;
+    margin-left:auto;
+    width: 80%;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1000;
+}
+
+#hold-reminder.show {
+    opacity: 1;
+}
+
+
+#congratulation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+#congratulation-text {
+  color: white;
+  font-size: 4em;
+  text-align: center;
+}
+
+.birthday-button {
+      background: linear-gradient(45deg, #ff69b4, #ffa07a);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 15px 30px;
+      border: 3px solid white;
+      border-radius: 50px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .birthday-button:hover {
+      background: linear-gradient(45deg, #ffa07a, #ff69b4);
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .birthday-button::before {
+      content: '🎂';
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40px;
+      animation: bounce 1s infinite;
+    }
+
+    .birthday-button::after {
+      content: '🎉';
+      position: absolute;
+      bottom: -30px;
+      right: 50%;
+      transform: translateX(50%);
+      font-size: 30px;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translate(-50%, 0);
+      }
+      50% {
+        transform: translate(-50%, -10px);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: translate(50%) rotate(0deg);
+      }
+      100% {
+        transform: translate(50%) rotate(360deg);
+      }
+    }
+
+    #makeAWishBtn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+  }
+
+
+
+  #makeAWishBtn:hover {
+      background-color: #ff1d4e;
+  }
+
+  #closeWishForm {
+    position: absolute; /* Place it at the top-right corner of the form */
+    top: 10px;
+    right: 10px;
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    font-size: 24px; /* Large font for "X" */
+    color: #555; /* Subtle color */
+    cursor: pointer; /* Pointer cursor */
+    transition: color 0.3s ease;
+}
+
+#closeWishBtn {
+  background-color: #f44336; /* Red color */
+  color: white;
+}
+
+#closeWishBtn:hover {
+  background-color: #d32f2f;
+}
+
+#closeWishForm:hover {
+    color: #ff6f91; /* Highlight color on hover */
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  align-items: center;
+}
+  /* Styling the Wish Form */
+  #wishForm {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+  }
+
+  /* Textarea for Wish */
+ 
+
+  #wishForm {
+    position: fixed; /* Stays in place and overlays content */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    z-index: 1000; /* Higher than any other element */
+}
+
+/* Form content styling */
+#wishFormContent {
+    background-color: #fff; /* White background for the form */
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%; /* Responsive width */
+    max-width: 500px; /* Maximum width for larger screens */
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+/* Textarea styling */
+#wishText {
+    width: 100%; /* Full width */
+    height: 100px; /* Height of the textarea */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none; /* Disable resizing */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+/* Submit button styling */
+#submitWishBtn , #closeWishBtn{
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #ff6f91;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#submitWishBtn:hover {
+    background-color: #ff1d4e; /* Darker color on hover */
+}
+
+
+#whatsapp-icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+#whatsapp-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #25D366; /* WhatsApp green color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+#whatsapp-icon img {
+  width: 40px;
+  height: 40px;
+}
+
+#whatsapp-icon-container:hover #whatsapp-icon {
+  background-color: #128C7E; /* Darker WhatsApp color on hover */
+}
+
+#whatsapp-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  max-width: 200px;
+  text-align: center;
+}
+
+#whatsapp-icon-container:hover #whatsapp-tooltip {
+  display: block;
+}

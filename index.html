@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Surprise</title>
+	<link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+	<link href="style.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+	<div id="volume-reminder">
+		<p>Increase sound and wait for song to over to be able to blow the candles</p>
+	</div>
+	<audio id="happy-birthday-audio">
+		<source src="/happy_birthday_final.mp3" type="audio/mpeg">
+	</audio>
+	<div id="hold-reminder">
+		<button class="birthday-button" id="blowCandlesButton">Click to Blow the Candles</button>
+	</div>
+
+	<audio id="next-audio">
+		<source src="/prem.mp3" type="audio/mpeg">
+	</audio>
+
+	<audio id="party-audio">
+		<source src="/sound.mp3" type="audio/mpeg">
+	</audio>
+
+	<audio id="next2-audio">
+		<source src="/krishna2.mp3" type="audio/mpeg">
+	</audio>
+
+	<div id="makeWishDiv"  style="display: none;">
+		<button id="makeAWishBtn" onclick="showWishForm()">Make a Wish</button>
+	</div>
+	
+
+	<div id="wishForm" style="display: none;">
+		<div id="wishFormContent">
+			<textarea id="wishText" placeholder="Write your wish here..."></textarea>
+			<div class="buttonContainer">
+				<button id="submitWishBtn">Submit</button>
+				<button id="closeWishBtn" onclick="closeWishForm(false)">Close</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="whatsapp-icon-container" style="display: none;">
+		<a href="#" target="_blank" id="whatsapp-icon" title="Contact the Developer">
+			<img src="/whatsapp.jpg" alt="WhatsApp" />
+		</a>
+		<div id="whatsapp-tooltip">You can contact the developer if you want!</div>
+	</div>
+
+	<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+
+<script type="module">
+    // Define your dynamic number (could be fetched from anywhere)
+	const my_number = import.meta.env.VITE_MY_NUMBER;
+    let message = 'Hi';
+
+    // Construct the dynamic WhatsApp link
+    let whatsappLink = `https://wa.me/${my_number}?text=${encodeURIComponent(message)}`;
+
+    // Get the anchor tag by its ID and set the href
+    document.getElementById('whatsapp-icon').href = whatsappLink;
+</script>
+
+<script type="module" type="text/javascript">
+	const publicKey = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
+	(function(){
+	   emailjs.init({
+		 publicKey: publicKey,
+	   });
+	})();
+ </script>
+ 
+	<script>
+	
+		const audio = document.getElementById('happy-birthday-audio');
+		const volumeReminder = document.getElementById('volume-reminder');
+
+		function showWishForm() {
+    document.getElementById('wishForm').style.display = 'block';
+    document.getElementById('makeAWishBtn').style.display = 'none'; // Hide the button
+}
+		setTimeout(function () {
+			audio.play(); // Play the audio
+			audio.volume = 0.8;
+			volumeReminder.classList.remove('show'); // Remove the 'show' class
+			setTimeout(function () {
+				volumeReminder.style.display = 'none'; // Hide the element after 1 second
+			}, 1000);
+        }, 7000);
+		window.addEventListener('load', function () {
+			volumeReminder.classList.add('show');
+		});
+		function closeWishForm(final =false) {
+    const wishForm = document.getElementById('wishForm');
+    wishForm.style.display = 'none'; // Hide the overlay
+	const wishbtn = document.getElementById('makeWishDiv');
+	const wishDiv =  document.getElementById('makeAWishBtn');
+    
+	if(final){
+         console.log("I am returning");
+		return;
+	}
+	console.log("I am after");
+	wishDiv.style.display='flex';
+	wishbtn.style.display='flex';
+	wishbtn.style.zIndex='1000';
+	wishbtn.style.position='fixed';
+	wishbtn.style.top='5vh';
+	wishbtn.style.left='50vw-10px';
+
+}
+
+
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+	<script type="module" src="script.js"></script>
+
+
+</body>
+
+</html>
