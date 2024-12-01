@@ -13,7 +13,7 @@
 <body>
 
 	<div id="volume-reminder">
-		<p>Increase sound and wait for song to over to be able to blow the candles</p>
+		<p>Please Click on the screen to continue.</p>
 	</div>
 	<audio id="happy-birthday-audio">
 		<source src="/happy_birthday_final.mp3" type="audio/mpeg">
@@ -90,17 +90,52 @@
     document.getElementById('wishForm').style.display = 'block';
     document.getElementById('makeAWishBtn').style.display = 'none'; // Hide the button
 }
-		setTimeout(function () {
-			audio.play(); // Play the audio
-			audio.volume = 0.8;
-			volumeReminder.classList.remove('show'); // Remove the 'show' class
-			setTimeout(function () {
-				volumeReminder.style.display = 'none'; // Hide the element after 1 second
-			}, 1000);
-        }, 7000);
+
 		window.addEventListener('load', function () {
 			volumeReminder.classList.add('show');
 		});
+
+		function hideVolumeReminder() {
+    volumeReminder.classList.remove('show');
+    setTimeout(function () {
+        volumeReminder.style.display = 'none'; // Completely hide after animation
+    }, 1000); // Delay to allow animation to finish
+}
+
+
+document.addEventListener('click', function enableAudio() {
+    document.removeEventListener('click', enableAudio); // Remove the listener after the first click
+    setTimeout(function () {
+        audio.play()
+            .then(() => {
+                audio.volume = 0.8;
+                volumeReminder.classList.remove('show');
+                setTimeout(function () {
+                    volumeReminder.style.display = 'none';
+                }, 1000);
+            })
+            .catch((error) => {
+                console.error('Audio playback failed:', error);
+				alert("Song Autoplay is paused due to google policies. Please Refresh the page and click to continue");
+            });
+    }, 100);
+});
+
+
+// function checkUserInteraction() {
+//     // Listen for volume change or click interaction
+//     audio.addEventListener('volumechange', function () {
+//         if (audio.volume > 0) { // If volume is increased
+//             hideVolumeReminder();
+// 			audio
+//         }
+//     });
+
+//     volumeReminder.addEventListener('click', function () {
+//         hideVolumeReminder();
+//     });
+// }
+
 		function closeWishForm(final =false) {
     const wishForm = document.getElementById('wishForm');
     wishForm.style.display = 'none'; // Hide the overlay
